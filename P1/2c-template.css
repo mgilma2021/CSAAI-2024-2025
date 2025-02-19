@@ -9,15 +9,15 @@
 .columna {
 float: left;
 padding: 10px;
-min-height: 500px;
+min-height: 700px;
 }
 
 .izquierda {
-width: 25%;
+width: 30%;
 }
 
 .derecha {
-width: 75%;
+width: 70%;
 }
 
 /* Clear floats despues de las columnas para eliminar la superposición */
@@ -28,11 +28,14 @@ clear: both;
 }
 
 #c1 {
-    background-color:#aaa;
+    background-color:#454dbf;
 }
 
 #c2 {
-    background-color:#bbb;
+    background-image: url(jack_frost.jpg);
+    background-size: cover; /* Para que cubra todo el contenedor */
+    background-position: center; /* Para centrar la imagen */
+    background-repeat: no-repeat; /* Para que no se repita */
 }
 
 /* estilos para imágenes https://www.w3schools.com/css/css3_images.asp */
@@ -48,6 +51,13 @@ img {
     float: left;
     width: 50%;
   }
+
+  .linea {
+    width: 100%;           /* El ancho de la línea será el 100% del contenedor */
+    height: 3px;           /* El grosor de la línea será de 3 píxeles */
+    background: linear-gradient(to right, #080c41, #141a72, #454dbf); /* El color de la línea será rojo */
+    margin: 20px 0;        /* Añade un espacio de 20px arriba y abajo */
+}
 
 /* Responsive layout - cuando el ancho de pantalla es menor a 600px, muestra las columnas apiladas. */
 /* Así conseguimos que el contenido se vea bien en dispositvos móviles */
