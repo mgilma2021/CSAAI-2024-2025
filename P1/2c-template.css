@@ -1,6 +1,7 @@
 /* https://www.w3schools.com/howto/howto_css_two_columns.asp */
 /* https://developer.mozilla.org/es/docs/Web/CSS/box-sizing */
 /* Así definimos el comportamiento de caja para todos los elementos */
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap');
 * {
     box-sizing: border-box;
   }
@@ -52,13 +53,18 @@ img {
     width: 50%;
   }
 
-  .linea {
-    width: 100%;           /* El ancho de la línea será el 100% del contenedor */
-    height: 3px;           /* El grosor de la línea será de 3 píxeles */
-    background: linear-gradient(to right, #080c41, #141a72, #454dbf); /* El color de la línea será rojo */
-    margin: 20px 0;        /* Añade un espacio de 20px arriba y abajo */
+.linea {
+  width: 100%;           /* El ancho de la línea será el 100% del contenedor */
+  height: 3px;           /* El grosor de la línea será de 3 píxeles */
+  background: linear-gradient(to right, #080c41, #141a72, #454dbf); /* El color de la línea será rojo */
+  margin: 20px 0;        /* Añade un espacio de 20px arriba y abajo */
 }
 
+.archivo-black-regular {
+  font-family: "Archivo Black", serif;
+  font-weight: 400;
+  font-style: normal;
+}
 /* Responsive layout - cuando el ancho de pantalla es menor a 600px, muestra las columnas apiladas. */
 /* Así conseguimos que el contenido se vea bien en dispositvos móviles */
 
