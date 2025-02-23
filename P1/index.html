@@ -49,17 +49,10 @@
                 Frases célebres
                 <ul>
                     <li>
-                        <div class="protesto-container">
-                            <div class="destello"></div>
-                            <a href="#" class="protesto">
-                                ¡Protesto!
-                            </a>
-                        </div>
-                        
-                        <audio class="protesto-audio">
+                        <audio id="Protesto">
                             <source src="Protesto.mp3" type="audio/mpeg">
-                        </audio>
-                        
+                        </audio>    
+                        <a href="#" onclick="document.getElementById('Protesto').play(); return false;"><div class="protesto">¡Protesto!</div></a>
                     </li>
                 </ul>
             </li>
