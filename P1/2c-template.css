@@ -71,8 +71,8 @@ img {
   position: relative;
 }
 
-.protesto {
-  font-size: 16px; /* Tamaño de la fuente más grande */
+.fuente_frases {
+  font-size: 14px; /* Tamaño de la fuente más grande */
   font-weight: bold;
   color: red;
   text-decoration: none;
