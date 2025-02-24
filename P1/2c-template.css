@@ -2,15 +2,25 @@
 /* https://developer.mozilla.org/es/docs/Web/CSS/box-sizing */
 /* Así definimos el comportamiento de caja para todos los elementos */
 @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap');
+
 * {
     box-sizing: border-box;
   }
-  
+
+  body {
+    background-image: url(fondo_phoenix.jpg);
+    background-size: cover; /* Cubre toda la pantalla */
+    background-position: center; /* Centra la imagen */
+    background-repeat: no-repeat; /* No se repite */
+    background-attachment: fixed; /* Fija el fondo al hacer scroll */
+  }
 /* Crear columnas de ancho diferente que se colocan una a continuación de la otra */
 .columna {
 float: left;
 padding: 10px;
 min-height: 700px;
+border: 5px solid rgba(255, 255, 0, 0.4); /* Amarillo con 50% de transparencia */
+  border-radius: 10px; /* Bordes redondeados opcional */
 }
 
 .izquierda {
@@ -29,14 +39,11 @@ clear: both;
 }
 
 #c1 {
-    background-color:#454dbf;
+  background-color: rgba(104, 112, 219, 0.4);
 }
 
 #c2 {
-    background-image: url(jack_frost.jpg);
-    background-size: cover; /* Para que cubra todo el contenedor */
-    background-position: center; /* Para centrar la imagen */
-    background-repeat: no-repeat; /* Para que no se repita */
+  background-color: rgba(104, 112, 219, 0.4);
 }
 
 /* estilos para imágenes https://www.w3schools.com/css/css3_images.asp */
@@ -56,7 +63,7 @@ img {
 .linea {
   width: 100%;           /* El ancho de la línea será el 100% del contenedor */
   height: 3px;           /* El grosor de la línea será de 3 píxeles */
-  background: linear-gradient(to right, #080c41, #141a72, #454dbf); /* El color de la línea será rojo */
+  background: linear-gradient(to right, #fbff00, #f5f260, #f3ea95); /* El color de la línea será rojo */
   margin: 20px 0;        /* Añade un espacio de 20px arriba y abajo */
 }
 
@@ -64,6 +71,7 @@ img {
   font-family: "Archivo Black", serif;
   font-weight: 400;
   font-style: normal;
+  color: black;
 }
 
 .protesto-container {
@@ -81,7 +89,10 @@ img {
   text-shadow: 2px 2px 5px #000; /* Sombra para dar más fuerza */
 }
 
-
+.icono_contactos {
+  width: 20px;  /* Ancho pequeño */
+  height: auto; /* Mantiene la proporción */
+}
 
 
 /* Responsive layout - cuando el ancho de pantalla es menor a 600px, muestra las columnas apiladas. */
