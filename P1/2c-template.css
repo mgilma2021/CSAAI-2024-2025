@@ -7,6 +7,11 @@
     box-sizing: border-box;
   }
 
+  ul {
+    padding-left: 15px;
+    list-style: circle;
+  } 
+
   body {
     background-image: url(fondo_phoenix.jpg);
     background-size: cover; /* Cubre toda la pantalla */
