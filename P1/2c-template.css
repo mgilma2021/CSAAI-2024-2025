@@ -100,7 +100,7 @@ img {
 }
 
 .imagen_personajes {
-  width: 150px;
+  width: 75px;
   height: auto;
 }
 
@@ -108,7 +108,10 @@ img {
   list-style: none; /* Elimina los puntos de la lista */
   padding: 0;
   display: flex; /* Alinea las imágenes en una fila */
-  gap: 20px; /* Espaciado entre imágenes */
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  gap: 5px; /* Espaciado entre imágenes */
 }
 
 .contenedor {
