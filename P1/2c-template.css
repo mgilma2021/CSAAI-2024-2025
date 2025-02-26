@@ -99,6 +99,23 @@ img {
   height: auto; /* Mantiene la proporción */
 }
 
+.imagen_personajes {
+  width: 150px;
+  height: auto;
+}
+
+.lista_personajes {
+  list-style: none; /* Elimina los puntos de la lista */
+  padding: 0;
+  display: flex; /* Alinea las imágenes en una fila */
+  gap: 20px; /* Espaciado entre imágenes */
+}
+
+.contenedor {
+  display: inline-block; /* Hace que el figure solo ocupe el ancho de la imagen */
+  text-align: center; /* Centra el texto debajo de la imagen */
+}
+
 /* Responsive layout - cuando el ancho de pantalla es menor a 600px, muestra las columnas apiladas. */
 /* Así conseguimos que el contenido se vea bien en dispositvos móviles */
 
