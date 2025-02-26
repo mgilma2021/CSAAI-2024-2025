@@ -115,6 +115,13 @@ img {
   gap: 5px; /* Espaciado entre imágenes */
 }
 
+@media (max-width: 600px) {
+  .referencias-container {
+      flex-direction: column; /* Cambia de fila a columna */
+      gap: 20px; /* Reduce el espacio entre referencias */
+  }
+}
+
 .contenedor {
   display: inline-block; /* Hace que el figure solo ocupe el ancho de la imagen */
   text-align: center; /* Centra el texto debajo de la imagen */
