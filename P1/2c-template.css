@@ -51,6 +51,14 @@ clear: both;
   background-color: rgba(104, 112, 219, 0.4);
 }
 
+.fuente_cv {
+  font-family: 'Cinzel', serif;
+  font-weight: bold;
+  font-size: 3rem;
+  text-align: center;
+  color: #004AAD; /* Azul parecido al del logo */
+  text-shadow: 2px 2px 0px #ffffff, 4px 4px 0px #000000; /* Efecto de contorno */
+}
 /* estilos para imágenes https://www.w3schools.com/css/css3_images.asp */
 /* posicionamiento de imágenes https://www.w3schools.com/css/css_positioning.asp */
 
