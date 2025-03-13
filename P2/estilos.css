@@ -1,0 +1,50 @@
+body {
+    background-image: url(fondo_sotano.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    
+    /* Centrar el contenido */
+    display: flex;
+    justify-content: center;  /* Centra horizontalmente */
+    align-items: center;  /* Centra verticalmente */
+    height: 100vh; /* Ocupa toda la pantalla */
+    margin: 0;
+}
+
+p{
+    color: green;
+}
+
+.marco_exterior {
+    width: 300px;
+    height: 400px;
+    background-color: rgba(0, 0, 0, 0.6);
+    border: 2px solid green;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px; /* Bordes redondeados opcional */
+    display: flex;
+}
+
+.marco_interior {
+    width: 280px;
+    height: 380px;
+    border: 2px solid green;
+    display: flex;
+    flex-direction: column; /* Acomoda los elementos en columna */
+    align-items: center;
+    border-radius: 10px;
+}
+
+.marco_codigo{
+    width: 280px;
+    height: 50px;
+    border: 2px solid green;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 10px;
+    padding-top: 10px;
+}

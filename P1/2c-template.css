@@ -25,7 +25,7 @@ float: left;
 padding: 10px;
 min-height: 700px;
 border: 5px solid rgba(255, 255, 0, 0.4); /* Amarillo con 50% de transparencia */
-  border-radius: 10px; /* Bordes redondeados opcional */
+border-radius: 10px; /* Bordes redondeados opcional */
 }
 
 .izquierda {
