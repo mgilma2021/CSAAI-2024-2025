@@ -13,10 +13,6 @@ body {
     margin: 0;
 }
 
-p{
-    color: green;
-}
-
 .marco_exterior {
     width: 300px;
     height: 400px;
@@ -49,8 +45,21 @@ p{
     margin-top: 6px;
 }
 
+.marco_tiempo {
+    width: 265px;
+    height: 100px;
+    border: 2px solid green;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items:safe;
+    border-radius: 10px;
+    margin-top: 6px;
+}
+
 .seccion {
     flex: 1; /* Cada sección ocupa el mismo espacio */
+    font-size: 20px;
     border-right: 2px solid green; /* Línea divisoria */
     height: 35px;
     display: flex;
@@ -63,4 +72,25 @@ p{
 /* Elimina la línea derecha en la última sección */
 .seccion:last-child {
     border-right: none;
+}
+
+#display {
+    color: red;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 40px;
+}
+
+.botones {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.botones button:hover {
+    background-color: darkred;
 }
