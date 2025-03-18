@@ -55,6 +55,7 @@ body {
     align-items:safe;
     border-radius: 10px;
     margin-top: 6px;
+    padding-bottom: 6px;
 }
 
 .seccion {
@@ -91,6 +92,42 @@ body {
     margin-top: 10px;
 }
 
-.botones button:hover {
-    background-color: darkred;
+#inicio {
+    font-size: 20px;
+    background-color: transparent;
+    border: 4px solid green;
+    border-radius: 3px;
+
 }
+
+#inicio:hover {background: black; color: green;}
+
+#stop {
+    font-size: 20px;
+    background-color: transparent;
+    border: 4px solid green;
+    border-radius: 3px;
+
+}
+
+#stop:hover {background: black; color: green;}
+
+#reset {
+    font-size: 20px;
+    background-color: transparent;
+    border: 4px solid green;
+    border-radius: 3px;
+
+}
+
+#reset:hover {background: black; color: green;}
+
+.numero {
+    font-size: 20px;
+    background-color: transparent;
+    border: 4px solid green;
+    border-radius: 3px;
+
+}
+
+.numero:hover {background: black; color: green;}
