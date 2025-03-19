@@ -13,13 +13,18 @@ document.addEventListener("DOMContentLoaded", function() {
     stopBtn.addEventListener("click", () => cronometro.stop());
     resetBtn.addEventListener("click", () => cronometro.reset());
 
+    const cancion_inicio = new Audio("intro_saw.mp3")
+    const cancion_final = new Audio("FNAF_6AM.pm3")
+
     let juegoIniciado = false; // Controla si el juego ha comenzado
 
-    const cancion_inicio = new Audio("intro_saw.mp3")
-    const cancion_final = new Audio("FNAF_6AM.mp3")
-
-    // Reproducimos la canción del inicio
     cancion_inicio.play()
+    
+    // Función para reproducir un sonido cada vez que se pulsa un botón
+    function reproducirSonido() {
+        let sonido = new Audio("boton.mp3"); // Ruta del archivo de sonido
+        sonido.play();
+    }
 
     // Función para generar la clave y asignarla a las secciones
     function iniciar_clave() {
