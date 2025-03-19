@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function() {
     resetBtn.addEventListener("click", () => cronometro.reset());
 
     const cancion_inicio = new Audio("intro_saw.mp3")
-    const cancion_final = new Audio("FNAF_6AM.pm3")
+    const cancion_final = new Audio("FNAF_6AM.mp3")
 
     let juegoIniciado = false; // Controla si el juego ha comenzado
 
