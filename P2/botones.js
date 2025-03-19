@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
                 if (aciertos === 4) {
                     cronometro.stop()
-                    cancion_inicio.stop()
+                    cancion_inicio.pause()
                     cancion_final.play()
                 }
             });
