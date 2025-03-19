@@ -1,5 +1,5 @@
 body {
-    background-image: url(fondo_sotano.jpg);
+    background-image: url(fondo_hospital.jpg);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -97,37 +97,41 @@ body {
     background-color: transparent;
     border: 4px solid green;
     border-radius: 3px;
+    color: green;
 
 }
 
-#inicio:hover {background: black; color: green;}
+#inicio:hover {background: black;}
 
 #stop {
     font-size: 20px;
     background-color: transparent;
     border: 4px solid green;
     border-radius: 3px;
+    color: green;
 
 }
 
-#stop:hover {background: black; color: green;}
+#stop:hover {background: black;}
 
 #reset {
     font-size: 20px;
     background-color: transparent;
     border: 4px solid green;
     border-radius: 3px;
+    color: green;
 
 }
 
-#reset:hover {background: black; color: green;}
+#reset:hover {background: black;}
 
 .numero {
     font-size: 20px;
     background-color: transparent;
     border: 4px solid green;
     border-radius: 3px;
+    color: green;
 
 }
 
-.numero:hover {background: black; color: green;}
+.numero:hover {background: black;}

@@ -34,19 +34,27 @@ class Crono {
         this.display.innerHTML = this.min + ":" + this.seg + ":" + this.cent
     }
 
+    // Función para reproducir un sonido cada vez que se pulsa un botón
+    reproducirSonido() {
+        let sonido = new Audio("boton.mp3"); // Ruta del archivo de sonido
+        sonido.play();
+}
+
     //-- Arrancar el cronómetro
     start() {
-       if (!this.timer) {
-          //-- Lanzar el temporizador para que llame 
-          //-- al método tic cada 10ms (una centésima)
-          this.timer = setInterval( () => {
-              this.tic();
-          }, 10);
+        this.reproducirSonido()
+        if (!this.timer) {
+            //-- Lanzar el temporizador para que llame 
+            //-- al método tic cada 10ms (una centésima)
+            this.timer = setInterval( () => {
+                this.tic();
+            }, 10);
         }
     }
 
     //-- Parar el cronómetro
     stop() {
+        this.reproducirSonido()
         if (this.timer) {
             clearInterval(this.timer);
             this.timer = null;
@@ -55,6 +63,7 @@ class Crono {
 
     //-- Reset del cronómetro
     reset() {
+        this.reproducirSonido()
         this.cent = 0;
         this.seg = 0;
         this.min = 0;

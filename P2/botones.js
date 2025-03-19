@@ -12,50 +12,93 @@ document.addEventListener("DOMContentLoaded", function() {
     startBtn.addEventListener("click", () => cronometro.start());
     stopBtn.addEventListener("click", () => cronometro.stop());
     resetBtn.addEventListener("click", () => cronometro.reset());
-});
 
-// Función para generar la clave y asignarla a las secciones
-function iniciar_clave() {
-    let secciones = document.querySelectorAll(".seccion");
-    let botones = document.querySelectorAll(".numero");
+    let juegoIniciado = false; // Controla si el juego ha comenzado
 
-    // Generar clave aleatoria para cada sección
-    let clave = Array.from({ length: secciones.length }, () => Math.floor(Math.random() * 10));
+    const cancion_inicio = new Audio("intro_saw.mp3")
+    const cancion_final = new Audio("FNAF_6AM.mp3")
 
-    // Asignar la clave a cada sección como atributo oculto y resetear su estado
-    secciones.forEach((seccion, index) => {
-        seccion.setAttribute("data-clave", clave[index]);
-        seccion.textContent = "*"; // Restaurar asteriscos
-        seccion.style.backgroundColor = ""; // Restaurar color de fondo
-    });
+    // Reproducimos la canción del inicio
+    cancion_inicio.play()
 
-    console.log("Claves generadas:", clave); // Para depuración
+    // Función para generar la clave y asignarla a las secciones
+    function iniciar_clave() {
+        let secciones = document.querySelectorAll(".seccion");
+        let botones = document.querySelectorAll(".numero");
+        let aciertos = 0;
 
-    // Evento para los botones numéricos
-    botones.forEach(boton => {
-        boton.addEventListener("click", function() {
-            let numeroPresionado = this.getAttribute("data-numero");
+        // Generar clave aleatoria para cada sección
+        let clave = Array.from({ length: secciones.length }, () => Math.floor(Math.random() * 10));
 
-            // Recorrer secciones en orden y revelar solo la primera coincidencia
-            for (let seccion of secciones) {
-                if (seccion.textContent === "*" && seccion.getAttribute("data-clave") === numeroPresionado) {
-                    seccion.textContent = numeroPresionado; // Revela el número
-                    break; // Detiene el bucle para que solo cambie la primera coincidencia
-                }
-            }
+        // Asignar la clave a cada sección como atributo oculto y resetear su estado
+        secciones.forEach((seccion, index) => {
+            seccion.setAttribute("data-clave", clave[index]);
+            seccion.textContent = "*"; // Restaurar asteriscos
+            seccion.style.color = ""; // Restaurar color de fondo
         });
-    });
-}
 
-// Cuando la página cargue, se ejecuta iniciar_clave y se configura el botón reset
-document.addEventListener("DOMContentLoaded", function() {
+        console.log("Claves generadas:", clave); // Para depuración
+
+        // Eliminar eventos anteriores para evitar duplicaciones
+        botones.forEach(boton => {
+            boton.replaceWith(boton.cloneNode(true)); // Clona el botón y reemplaza el original
+        });
+
+        // Seleccionar nuevamente los botones clonados
+        botones = document.querySelectorAll(".numero");
+
+        // Evento para los botones numéricos
+        botones.forEach(boton => {
+            boton.addEventListener("click", function() {
+                reproducirSonido()
+
+                let numeroPresionado = this.getAttribute("data-numero");
+
+                if (!juegoIniciado) {
+                    juegoIniciado = true
+                    cronometro.start()
+                }
+
+                // Recorrer secciones en orden y revelar solo la primera coincidencia
+                for (let seccion of secciones) {
+                    if (seccion.textContent === "*" && seccion.getAttribute("data-clave") === numeroPresionado) {
+                        seccion.textContent = numeroPresionado; // Revela el número
+                        seccion.style.color = "green"; // Cambia el color al acertar
+                        aciertos += 1;
+                        break; // Detiene el bucle para que solo cambie la primera coincidencia
+                    }
+                }
+
+                if (aciertos === 4) {
+                    cronometro.stop()
+                    cancion_inicio.stop()
+                    cancion_final.play()
+                }
+            });
+        });
+    }
+
     iniciar_clave(); // Genera la clave al cargar la página
 
     let reset = document.getElementById("reset");
+    let start = document.getElementById('inicio')
     
+    if (start) {
+        start.addEventListener("click", function() {
+            juegoIniciado = true; // Ahora el usuario puede adivinar la clave
+            console.log("¡Juego iniciado! Ahora puedes revelar números.");
+        });
+    
+    } else {
+        console.error("El botón Start no existe en el DOM.");
+    }
+
     if (reset) {
         reset.addEventListener("click", function() {
+            juegoIniciado = false; // Se bloquea otra vez el pad numérico
             iniciar_clave(); // Reinicia la clave y los asteriscos
         });
+    } else {
+        console.error("El botón reset no existe en el DOM.");
     }
 });
