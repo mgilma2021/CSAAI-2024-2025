@@ -17,6 +17,8 @@ document.addEventListener("DOMContentLoaded", function() {
     const cancion_final = new Audio("FNAF_6AM.mp3")
 
     let juegoIniciado = false; // Controla si el juego ha comenzado
+    let intentos = 10; // Número de intentos que tenemos para adivinar la clave
+
 
     cancion_inicio.play()
     
@@ -26,12 +28,23 @@ document.addEventListener("DOMContentLoaded", function() {
         sonido.play();
     }
 
+    // Función para ir actualizando el número de intentos
+    function actualizar_intentos() {
+        intentos -= 1
+        document.getElementById("contador_intentos").innerHTML = intentos
+    }
+
+    function resetear_intentos() {
+        intentos = 10
+        document.getElementById("contador_intentos").innerHTML = intentos
+    }
+
     // Función para generar la clave y asignarla a las secciones
     function iniciar_clave() {
         let secciones = document.querySelectorAll(".seccion");
         let botones = document.querySelectorAll(".numero");
         let aciertos = 0;
-
+        
         // Generar clave aleatoria para cada sección
         let clave = Array.from({ length: secciones.length }, () => Math.floor(Math.random() * 10));
 
@@ -42,7 +55,7 @@ document.addEventListener("DOMContentLoaded", function() {
             seccion.style.color = ""; // Restaurar color de fondo
         });
 
-        console.log("Claves generadas:", clave); // Para depuración
+        console.log("Claves generadas:", clave);
 
         // Eliminar eventos anteriores para evitar duplicaciones
         botones.forEach(boton => {
@@ -55,11 +68,15 @@ document.addEventListener("DOMContentLoaded", function() {
         // Evento para los botones numéricos
         botones.forEach(boton => {
             boton.addEventListener("click", function() {
+
+                if (intentos === 0 ) return;
+
                 reproducirSonido()
+                actualizar_intentos()
 
                 let numeroPresionado = this.getAttribute("data-numero");
 
-                if (!juegoIniciado) {
+                if (!juegoIniciado && intentos !== 0) {
                     juegoIniciado = true
                     cronometro.start()
                 }
@@ -78,6 +95,11 @@ document.addEventListener("DOMContentLoaded", function() {
                     cronometro.stop()
                     cancion_inicio.pause()
                     cancion_final.play()
+                }
+
+                if (intentos === 0) {
+                    cronometro.stop()
+                    juegoIniciado = false
                 }
             });
         });
@@ -102,6 +124,8 @@ document.addEventListener("DOMContentLoaded", function() {
         reset.addEventListener("click", function() {
             juegoIniciado = false; // Se bloquea otra vez el pad numérico
             iniciar_clave(); // Reinicia la clave y los asteriscos
+            intentos = 10; // Reiniciamos los intentos
+            resetear_intentos()
         });
     } else {
         console.error("El botón reset no existe en el DOM.");
