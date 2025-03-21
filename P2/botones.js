@@ -18,8 +18,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
     let juegoIniciado = false; // Controla si el juego ha comenzado
     let intentos = 10; // Número de intentos que tenemos para adivinar la clave
-
-
+    let inicio_cancion = true
+    let victoria = false
+    
     cancion_inicio.play()
 
     setTimeout(() => alert('¿Quieres jugar a un juego?'), 1000);
@@ -96,16 +97,21 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
 
                 if (aciertos === 4) {
+                    vicotria = true
                     cronometro.stop()
                     cancion_inicio.pause()
+                    inicio_cancion = false
                     cancion_final.play()
                     alert('Vaya, parece que has desactivado la bomba, bien jugado...')
                 }
 
-                if (intentos === 0) {
+                if (intentos === 0 && victoria === false) {
                     cronometro.stop()
                     juegoIniciado = false
-                    alert('HAS MUERTO, JAJAJAJAJAJAJA!!!!')
+                    if (perdido = false) {
+                        alert('HAS MUERTO, JAJAJAJAJAJAJA!!!!')
+                    }
+                    
                 }
             });
         });
@@ -132,6 +138,10 @@ document.addEventListener("DOMContentLoaded", function() {
             iniciar_clave(); // Reinicia la clave y los asteriscos
             intentos = 10; // Reiniciamos los intentos
             resetear_intentos()
+            vicotria = false
+            if (inicio_cancion === false) {
+                cancion_inicio.start()
+            }
         });
     } else {
         console.error("El botón reset no existe en el DOM.");
