@@ -21,6 +21,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
     cancion_inicio.play()
+
+    alert('¿Quieres jugar a un juego?')
+    alert('Tienes que desactivar la bomba adivinando su codigo, si no moriras')
+    alert('JAJAJAJAJAJAJA!!!!!')
     
     // Función para reproducir un sonido cada vez que se pulsa un botón
     function reproducirSonido() {
@@ -95,11 +99,13 @@ document.addEventListener("DOMContentLoaded", function() {
                     cronometro.stop()
                     cancion_inicio.pause()
                     cancion_final.play()
+                    alert('Vaya, parece que has desactivado la bomba, bien jugado...')
                 }
 
                 if (intentos === 0) {
                     cronometro.stop()
                     juegoIniciado = false
+                    alert('HAS MUERTO, JAJAJAJAJAJAJA!!!!')
                 }
             });
         });
