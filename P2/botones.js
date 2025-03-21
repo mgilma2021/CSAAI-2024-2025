@@ -22,9 +22,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
     cancion_inicio.play()
 
-    alert('¿Quieres jugar a un juego?')
-    alert('Tienes que desactivar la bomba adivinando su codigo, si no moriras')
-    alert('JAJAJAJAJAJAJA!!!!!')
+    setTimeout(() => alert('¿Quieres jugar a un juego?'), 1000);
+    setTimeout(() => alert('Tienes que desactivar la bomba adivinando su código, si no morirás'), 3000);
+    setTimeout(() => alert('JAJAJAJAJAJAJA!!!!!'), 5000);
     
     // Función para reproducir un sonido cada vez que se pulsa un botón
     function reproducirSonido() {
