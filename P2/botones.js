@@ -140,7 +140,7 @@ document.addEventListener("DOMContentLoaded", function() {
             resetear_intentos()
             vicotria = false
             if (inicio_cancion === false) {
-                cancion_inicio.start()
+                cancion_inicio.play()
             }
         });
     } else {
