@@ -18,10 +18,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
     let juegoIniciado = false; // Controla si el juego ha comenzado
     let intentos = 10; // Número de intentos que tenemos para adivinar la clave
-    let inicio_cancion = true
-    let victoria = false
+    let inicio_cancion = true;
+    let victoria = false;
+ 		let perdido 
     
-    cancion_inicio.play()
+    cancion_inicio.play();
 
     setTimeout(() => alert('¿Quieres jugar a un juego?'), 1000);
     setTimeout(() => alert('Tienes que desactivar la bomba adivinando su código, si no morirás'), 3000);
@@ -35,13 +36,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Función para ir actualizando el número de intentos
     function actualizar_intentos() {
-        intentos -= 1
-        document.getElementById("contador_intentos").innerHTML = intentos
+        intentos -= 1;
+        document.getElementById("contador_intentos").innerHTML = intentos;
     }
 
     function resetear_intentos() {
-        intentos = 10
-        document.getElementById("contador_intentos").innerHTML = intentos
+        intentos = 10;
+        document.getElementById("contador_intentos").innerHTML = intentos;
     }
 
     // Función para generar la clave y asignarla a las secciones
@@ -76,14 +77,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
                 if (intentos === 0 ) return;
 
-                reproducirSonido()
-                actualizar_intentos()
+                reproducirSonido();
+                actualizar_intentos();
 
                 let numeroPresionado = this.getAttribute("data-numero");
 
                 if (!juegoIniciado && intentos !== 0) {
-                    juegoIniciado = true
-                    cronometro.start()
+                    juegoIniciado = true;
+                    cronometro.start();
                 }
 
                 // Recorrer secciones en orden y revelar solo la primera coincidencia
@@ -97,19 +98,19 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
 
                 if (aciertos === 4) {
-                    vicotria = true
-                    cronometro.stop()
-                    cancion_inicio.pause()
-                    inicio_cancion = false
-                    cancion_final.play()
-                    alert('Vaya, parece que has desactivado la bomba, bien jugado...')
+                    victoria = true;
+                    cronometro.stop();
+                    cancion_inicio.pause();
+                    inicio_cancion = false;
+                    cancion_final.play();
+                    alert('Vaya, parece que has desactivado la bomba, bien jugado...');
                 }
 
                 if (intentos === 0 && victoria === false) {
-                    cronometro.stop()
-                    juegoIniciado = false
+                    cronometro.stop();
+                    juegoIniciado = false;
                     if (perdido = false) {
-                        alert('HAS MUERTO, JAJAJAJAJAJAJA!!!!')
+                        alert('HAS MUERTO, JAJAJAJAJAJAJA!!!!');
                     }
                     
                 }
@@ -120,7 +121,7 @@ document.addEventListener("DOMContentLoaded", function() {
     iniciar_clave(); // Genera la clave al cargar la página
 
     let reset = document.getElementById("reset");
-    let start = document.getElementById('inicio')
+    let start = document.getElementById('inicio');
     
     if (start) {
         start.addEventListener("click", function() {
@@ -137,10 +138,10 @@ document.addEventListener("DOMContentLoaded", function() {
             juegoIniciado = false; // Se bloquea otra vez el pad numérico
             iniciar_clave(); // Reinicia la clave y los asteriscos
             intentos = 10; // Reiniciamos los intentos
-            resetear_intentos()
-            vicotria = false
+            resetear_intentos();
+            victoria = false;
             if (inicio_cancion === false) {
-                cancion_inicio.play()
+                cancion_inicio.play();
             }
         });
     } else {
