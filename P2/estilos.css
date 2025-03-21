@@ -1,15 +1,18 @@
+/* Asegurar que los elementos incluyan el padding y el borde en su tamaño total */
+* {
+    box-sizing: border-box;
+}
+
 body {
     background-image: url(fondo_hospital.jpg);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed;
-    
-    /* Centrar el contenido */
     display: flex;
-    justify-content: center;  /* Centra horizontalmente */
-    align-items: center;  /* Centra verticalmente */
-    height: 100vh; /* Ocupa toda la pantalla */
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
     margin: 0;
 }
 
@@ -19,61 +22,47 @@ h2 {
 
 .iresponsive {
     padding: 0 6px;
-    float: left;
-    width: 50%;
+    width: 100%; /* Para mejor adaptación en móviles */
 }
 
-
 .marco_exterior {
-    width: 97%;
+    width: 120%;
     max-width: 300px;
     height: auto;
     background-color: rgba(0, 0, 0, 0.6);
     border: 2px solid green;
     justify-content: center;
     align-items: center;
-    border-radius: 10px; /* Bordes redondeados opcional */
-    display: flex;
-    padding-top: 5px;
-    padding-bottom: 5px;
-}
-
-.marco_interior {
-    width: 90%;
-    max-height: 380px;
-    height: auto;
-    border: 2px solid green;
-    display: flex;
-    flex-direction: column; /* Acomoda los elementos en columna */
-    align-items: center;
     border-radius: 10px;
-}
-
-.marco_codigo{
-    width: 90%;
-    max-width: 265px;
-    height: auto;
-    border: 2px solid green;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 10px;
-    margin-top: 6px;
+    padding: 5px 0;
 }
 
-.marco_tiempo {
+.marco_interior, .marco_tiempo {
     width: 90%;
     max-width: 265px;
     height: auto;
     border: 2px solid green;
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items:safe;
+    align-items: center;
     border-radius: 10px;
     margin-top: 6px;
     padding-bottom: 6px;
 }
+
+.marco_codigo {
+    width: 90%;
+    max-width: 265px;
+    height: auto;
+    border: 2px solid green;
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+    margin-top: 6px;
+    padding-bottom: 6px;
+}
+
 
 .seccion {
     flex: 1; /* Cada sección ocupa el mismo espacio */
@@ -81,13 +70,13 @@ h2 {
     border-right: 2px solid green; /* Línea divisoria */
     height: 35px;
     display: flex;
+    flex-direction: row;
     justify-content: center;
     align-items: center;
     font-weight: bold;
     color: red;
 }
 
-/* Elimina la línea derecha en la última sección */
 .seccion:last-child {
     border-right: none;
 }
@@ -107,49 +96,28 @@ h2 {
     justify-content: center;
     gap: 10px;
     margin-top: 10px;
+    flex-wrap: wrap;
 }
 
-#inicio {
+button, .numero {
     font-size: 20px;
     background-color: transparent;
     border: 4px solid green;
     border-radius: 3px;
     color: green;
-
 }
 
-#inicio:hover {background: black;}
-
-#stop {
-    font-size: 20px;
-    background-color: transparent;
-    border: 4px solid green;
-    border-radius: 3px;
-    color: green;
-
+button:hover, .numero:hover {
+    background: black;
 }
 
-#stop:hover {background: black;}
-
-#reset {
-    font-size: 20px;
-    background-color: transparent;
-    border: 4px solid green;
-    border-radius: 3px;
-    color: green;
-
+/* Ajustes responsive para pantallas pequeñas */
+@media screen and (max-width: 600px) {
+    .marco_exterior, .marco_interior, .marco_codigo, .marco_tiempo {
+        width: 100%;
+        max-width: none;
+    }
+    .botones {
+        gap: 5px;
+    }
 }
-
-#reset:hover {background: black;}
-
-.numero {
-    font-size: 20px;
-    background-color: transparent;
-    border: 4px solid green;
-    border-radius: 3px;
-    color: green;
-
-}
-
-.numero:hover {background: black;}
-
