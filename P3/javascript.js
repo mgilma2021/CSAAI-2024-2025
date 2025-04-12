@@ -33,8 +33,8 @@ nave_imperio1.src = 'nave_imperio1.png';
 const enemigos = [];
 const filas = 5;
 const columnas = 8;
-const ancho_enemigo = 70;
-const alto_enemigo = 40;
+const ancho_enemigo = canvas.width * 0.05;
+const alto_enemigo = canvas.height * 0.05;
 const velocidad_enemigos = 2;
 let direccion_enemigos = 1; // 1 para derecha, -1 para izquierda
 let descenso_enemigos = 30; // Cuánto bajan los enemigos al llegar al borde
@@ -59,8 +59,8 @@ for (let fila = 0; fila < filas; fila++) {
 }
 
 // Posición incial
-const ancho_nave = 120;
-const alto_nave = 80;
+const ancho_nave = canvas.width * 0.1;
+const alto_nave = canvas.height * 0.1;
 
 let x = (canvas.width - ancho_nave) / 2;
 let y = canvas.height - alto_nave - 55;
