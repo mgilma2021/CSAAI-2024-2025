@@ -53,7 +53,8 @@ for (let fila = 0; fila < filas; fila++) {
       y: fila * (alto_enemigo + 10) + 50, // Espaciado vertical
       ancho: ancho_enemigo,
       alto: alto_enemigo,
-      ultimo_disparo_enemigo: 0
+      ultimo_disparo_enemigo: 0,
+      visible: true
     });
   }
 }
@@ -94,9 +95,10 @@ function disparar() {
   let bala = {
     x: x + ancho_nave / 2 - 5, // Centrar la bala con respecto a la nave
     y: y,
-    ancho: 10,
-    alto: 20,
-    velocidad: 7
+    ancho: 20,
+    alto: 40,
+    velocidad: 5,
+    origen: 'jugador'
   };
   balas.push(bala); // Agregar la bala al array
 
@@ -107,41 +109,31 @@ function disparar() {
 // Función para que los enemigos de la última fila disparen
 function disparo_enemigos() {
   const ahora = Date.now();
+  const enemigos_disponibles = [];
 
-  // Número de enemigos por fila (columnas)
-  const columnas = 8;  // 8 columnas en este caso
-  const filas = 5;     // 5 filas de enemigos
-  
-  // Determinamos el rango de la última fila (desde el final del array)
-  const ultima_fila_start = columnas - enemigos.length;  // Primer enemigo de la última fila
-  const ultima_fila_end = enemigos.length;               // Último enemigo de la última fila
-  
-  // Crear una lista de enemigos de la última fila
-  const ultima_fila = enemigos.slice(ultima_fila_start, ultima_fila_end);
+  for (let col = 0; col < columnas; col++) {
+    const index = 0 * columnas + col; // Fila 0 (la de más arriba)
+    const enemigo = enemigos[index];
 
-  // Elegir un enemigo aleatorio que pueda disparar
-  const enemigos_que_pueden_disparar = ultima_fila.filter(enemigo => ahora - enemigo.ultimo_disparo_enemigo > tiempo_cooldown);
+    if (enemigo && enemigo.visible) {
+      enemigos_disponibles.push(enemigo);
+    }
+  }
 
-  // Si hay enemigos disponibles para disparar
-  if (enemigos_que_pueden_disparar.length > 0) {
-    // Elegir un enemigo aleatorio de los que pueden disparar
-    const enemigo_aleatorio = enemigos_que_pueden_disparar[Math.floor(Math.random() * enemigos_que_pueden_disparar.length)];
+  if (enemigos_disponibles.length > 0) {
+    const enemigo_aleatorio = enemigos_disponibles[Math.floor(Math.random() * enemigos_disponibles.length)];
 
-    // Crear la bala para el enemigo
-    if (Math.random() < 0.025) { // Ajusta el 0.5 para cambiar la probabilidad
-      // Crear la bala para el enemigo
+    if (ahora - enemigo_aleatorio.ultimo_disparo_enemigo > tiempo_cooldown && Math.random() < 0.01) {
       let bala_enemigo = {
-        x: enemigo_aleatorio.x + ancho_enemigo / 2 - 10, // Centrado horizontalmente
-        y: enemigo_aleatorio.y + alto_enemigo,           // Justo debajo del enemigo
+        x: enemigo_aleatorio.x + ancho_enemigo / 2 - 10,
+        y: enemigo_aleatorio.y + alto_enemigo,
         ancho: 20,
         alto: 40,
-        velocidad: 5
+        velocidad: 5,
+        origen: 'enemigo'
       };
 
-      // Añadir la bala al array de balas
       balas.push(bala_enemigo);
-
-      // Actualizar el tiempo de disparo para el enemigo
       enemigo_aleatorio.ultimo_disparo_enemigo = ahora;
     }
   }
@@ -162,7 +154,7 @@ function update() {
   // Mover las balas hacia arriba
   for (let i = 0; i < balas.length; i++) {
     // Si la bala es del enemigo (es decir, el ancho es mayor a 10, ajusta según el tamaño de tus balas)
-    if (balas[i].alto > 20) {
+    if (balas[i].origen === 'enemigo') {
       balas[i].y += balas[i].velocidad; // Mover hacia abajo
     } else {
       balas[i].y -= balas[i].velocidad; // Mover hacia arriba para las balas de la nave
@@ -205,6 +197,29 @@ function update() {
     }
   }
 
+  for (let i = 0; i < balas.length; i++) {
+    let bala = balas[i];
+  
+    // Comprobamos si algun disparo choca con los enemigos
+    if (bala.origen === 'jugador') {
+      for (let j = 0; j < enemigos.length; j++) {
+        let enemigo = enemigos[j];
+    
+        if (enemigo.visible &&
+            bala.x < enemigo.x + enemigo.ancho &&
+            bala.x + bala.ancho > enemigo.x &&
+            bala.y < enemigo.y + enemigo.alto &&
+            bala.y + bala.alto > enemigo.y) {
+          
+          enemigo.visible = false;  // El enemigo desaparece
+          balas.splice(i, 1);       // Eliminar la bala
+          i--; // Ajustamos el índice de la bala eliminada
+          break; // Salimos del bucle de enemigos porque la bala ya no existe
+        }
+      }
+    }
+  }
+
   // Limpiar el canvas y redibujar todo
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -218,10 +233,10 @@ function update() {
     ctx.drawImage(bala, balas[i].x, balas[i].y, balas[i].ancho, balas[i].alto);
   }
 
-  // Dibujar los enemigos (cuadrados rojos)
+  // Dibujar los enemigos
   for (let i = 0; i < enemigos.length; i++) {
-    if (nave_imperio1.complete) {  // Comprobar si la imagen ha cargado
-      ctx.drawImage(nave_imperio1, enemigos[i].x, enemigos[i].y, ancho_enemigo, alto_enemigo);
+    if (enemigos[i].visible) {
+      ctx.drawImage(nave_imperio1, enemigos[i].x, enemigos[i].y, enemigos[i].ancho, enemigos[i].alto);
     }
   }
 
