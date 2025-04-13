@@ -27,6 +27,13 @@ const sonido_disparo = new Audio('disparo_laser.mp3');
 const tiempo_cooldown = 500; // 500ms
 let ultimo_disparo = 0;
 
+// Explosiones al impactar
+const explosion = new Image();
+explosion.src = 'explosion.png';
+
+// Sonido de las explosiones
+const sonido_explosion = new Audio('explosion.mp3');
+
 // Creación de los enemigos
 const nave_imperio1 = new Image();
 nave_imperio1.src = 'nave_imperio1.png';
@@ -139,6 +146,25 @@ function disparo_enemigos() {
   }
 }
 
+// Función para las explosiones
+let explosiones = [];
+
+function agregar_explosion(x, y) {
+  explosiones.push({ x: x, y: y, tiempo: Date.now() });
+  sonido_explosion.currentTime = 0;
+  sonido_explosion.play();
+}
+
+function dibujar_explosiones(ctx) {
+  const ahora = Date.now();
+  explosiones = explosiones.filter(e => ahora - e.tiempo < 300); // Mostrar por 300 ms
+
+  for (let i = 0; i < explosiones.length; i++) {
+    ctx.drawImage(explosion, explosiones[i].x, explosiones[i].y, 40, 40); // Tamaño de la explosión
+  }
+}
+
+let vida_jugador = 10; // Número de golpes que tiene la nave antes de perder
 
 // Función para la animación de movimiento
 function update() {
@@ -210,12 +236,35 @@ function update() {
             bala.x + bala.ancho > enemigo.x &&
             bala.y < enemigo.y + enemigo.alto &&
             bala.y + bala.alto > enemigo.y) {
-          
-          enemigo.visible = false;  // El enemigo desaparece
-          balas.splice(i, 1);       // Eliminar la bala
-          i--; // Ajustamos el índice de la bala eliminada
-          break; // Salimos del bucle de enemigos porque la bala ya no existe
+              
+              agregar_explosion(enemigo.x, enemigo.y);
+              enemigo.visible = false;  // El enemigo desaparece
+              balas.splice(i, 1);       // Eliminar la bala
+              i--; // Ajustamos el índice de la bala eliminada
+              break; // Salimos del bucle de enemigos porque la bala ya no existe
         }
+      }
+    }
+  }
+
+  // Comprobamos si alguna bala enemiga impacta con la nave del jugador
+  for (let i = 0; i < balas.length; i++) {
+    let bala = balas[i];
+
+    if (bala.origen === 'enemigo' &&
+        bala.x < x + ancho_nave &&
+        bala.x + bala.ancho > x &&
+        bala.y < y + alto_nave &&
+        bala.y + bala.alto > y) {
+
+      agregar_explosion(x, y); // Imagen y sonido de explosión
+      balas.splice(i, 1); // Eliminar la bala enemiga
+      i--;
+
+      vida_jugador--; // Reducir vida
+      if (vida_jugador <= 0) {
+        alert("¡Game Over!");
+        return;
       }
     }
   }
@@ -239,6 +288,16 @@ function update() {
       ctx.drawImage(nave_imperio1, enemigos[i].x, enemigos[i].y, enemigos[i].ancho, enemigos[i].alto);
     }
   }
+
+  dibujar_explosiones(ctx);
+
+  // Barra de vida de la nave
+  ctx.fillStyle = 'red';
+  ctx.fillRect(20, 20, 100, 20); // Fondo rojo
+  ctx.fillStyle = 'green';
+  ctx.fillRect(20, 20, 100 * (vida_jugador / 10), 20); // Verde según la vida
+  ctx.strokeStyle = 'white';
+  ctx.strokeRect(20, 20, 100, 20); // Borde blanco
 
   requestAnimationFrame(update);
 }
