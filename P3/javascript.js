@@ -12,6 +12,11 @@ function ajustarCanvas() {
 window.addEventListener('resize', ajustarCanvas);
 ajustarCanvas();
 
+// Canción de fondo
+const musica_fondo = new Audio('duel_of_fates.mp3');
+musica_fondo.loop = true;
+musica_fondo.volume = 0.5;
+
 // Nave del piloto
 const nave = new Image();
 nave.src = 'x_wing.png'
@@ -30,6 +35,19 @@ let ultimo_disparo = 0;
 // Explosiones al impactar
 const explosion = new Image();
 explosion.src = 'explosion.png';
+
+// Imagen del nave final
+const nave_vader = new Image();
+nave_vader.src = 'nave_vader.png';
+
+// Parametros del jefe final
+let jefe_final = null;
+let jefe_visible = false;
+let jefe_vida = 20; 
+let tiempo_ultimo_disparo_jefe = 0;
+let intervalo_disparo_jefe = 500; // Inervalo entre disparos en ms
+let tiempo_ultimo_cambio_direccion = 0;
+let intervalo_cambio_direccion = 1000; // Intervalo que tiene que esperar el jefe antes de cambiar de dirección
 
 // Sonido de las explosiones
 const sonido_explosion = new Audio('explosion.mp3');
@@ -146,6 +164,30 @@ function disparo_enemigos() {
   }
 }
 
+// Función para los disparos del jefe
+function disparo_jefe() {
+  let ahora = Date.now();
+
+  if (ahora - tiempo_ultimo_disparo_jefe > intervalo_disparo_jefe) {
+    tiempo_ultimo_disparo_jefe = ahora;
+
+    // 60% de probabilidad de disparar
+    if (Math.random() < 0.6) {
+      let bala_jefe = {
+        x: jefe_final.x + jefe_final.ancho / 2 - 10,
+        y: jefe_final.y + jefe_final.alto,
+        ancho: 20,
+        alto: 40,
+        velocidad: 5,
+        origen: 'enemigo'
+      };
+
+      balas.push(bala_jefe);
+      jefe_final.ultimo_disparo = ahora;
+    };
+  }
+}
+
 // Función para las explosiones
 let explosiones = [];
 
@@ -166,102 +208,87 @@ function dibujar_explosiones(ctx) {
 
 let vida_jugador = 10; // Número de golpes que tiene la nave antes de perder
 
-// Función para la animación de movimiento
 function update() {
   // Actualizar la posición de la nave
   if (izquierda_presionada) x -= velocidad;
   if (derecha_presionada) x += velocidad;
-
   if (x < 0) x = 0;
   if (x + ancho_nave > canvas.width) x = canvas.width - ancho_nave;
-
   y = canvas.height - alto_nave - 55;
 
-  // Mover las balas hacia arriba
+  // Mover las balas
   for (let i = 0; i < balas.length; i++) {
-    // Si la bala es del enemigo (es decir, el ancho es mayor a 10, ajusta según el tamaño de tus balas)
     if (balas[i].origen === 'enemigo') {
-      balas[i].y += balas[i].velocidad; // Mover hacia abajo
+      balas[i].y += balas[i].velocidad;
     } else {
-      balas[i].y -= balas[i].velocidad; // Mover hacia arriba para las balas de la nave
+      balas[i].y -= balas[i].velocidad;
     }
-  
-    // Eliminar las balas que salen del canvas
+
     if (balas[i].y > canvas.height || balas[i].y < 0) {
       balas.splice(i, 1);
-      i--; // Ajustar el índice al eliminar una bala
+      i--;
     }
   }
 
-  // Mover los enemigos de manera conjunta
+  // Mover los enemigos
   let cambiar_direccion = false;
   for (let i = 0; i < enemigos.length; i++) {
     enemigos[i].x += velocidad_enemigos * direccion_enemigos;
-
-    // Comprobar si algún enemigo ha tocado el borde
     if (enemigos[i].x + enemigos[i].ancho > canvas.width || enemigos[i].x < 0) {
       cambiar_direccion = true;
     }
   }
 
-  // Si algún enemigo llegó al borde, cambiamos dirección y bajamos todos los enemigos
   if (cambiar_direccion) {
-    direccion_enemigos *= -1; // Cambiar dirección
+    direccion_enemigos *= -1;
     for (let j = 0; j < enemigos.length; j++) {
-      enemigos[j].y += descenso_enemigos; // Todos bajan un nivel
+      enemigos[j].y += descenso_enemigos;
     }
   }
 
-  // Disparos de los enemigos
   disparo_enemigos();
 
-  // Comprobar si algún enemigo llega a la nave (game over)
+  // Colisión enemigos con la nave
   for (let i = 0; i < enemigos.length; i++) {
     if (enemigos[i].y + enemigos[i].alto >= y) {
       alert("¡Game Over!");
-      return; // Detener la ejecución del juego
+      return;
     }
   }
 
+  // Colisión balas del jugador con enemigos
   for (let i = 0; i < balas.length; i++) {
     let bala = balas[i];
-  
-    // Comprobamos si algun disparo choca con los enemigos
     if (bala.origen === 'jugador') {
       for (let j = 0; j < enemigos.length; j++) {
         let enemigo = enemigos[j];
-    
         if (enemigo.visible &&
             bala.x < enemigo.x + enemigo.ancho &&
             bala.x + bala.ancho > enemigo.x &&
             bala.y < enemigo.y + enemigo.alto &&
             bala.y + bala.alto > enemigo.y) {
-              
-              agregar_explosion(enemigo.x, enemigo.y);
-              enemigo.visible = false;  // El enemigo desaparece
-              balas.splice(i, 1);       // Eliminar la bala
-              i--; // Ajustamos el índice de la bala eliminada
-              break; // Salimos del bucle de enemigos porque la bala ya no existe
+          agregar_explosion(enemigo.x, enemigo.y);
+          enemigo.visible = false;
+          balas.splice(i, 1);
+          i--;
+          break;
         }
       }
     }
   }
 
-  // Comprobamos si alguna bala enemiga impacta con la nave del jugador
+  // Colisión balas de enemigo con la nave
   for (let i = 0; i < balas.length; i++) {
     let bala = balas[i];
-
     if (bala.origen === 'enemigo' &&
         bala.x < x + ancho_nave &&
         bala.x + bala.ancho > x &&
         bala.y < y + alto_nave &&
         bala.y + bala.alto > y) {
-
-      agregar_explosion(x, y); // Imagen y sonido de explosión
-      balas.splice(i, 1); // Eliminar la bala enemiga
+      agregar_explosion(x, y);
+      balas.splice(i, 1);
       i--;
-
-      vida_jugador--; // Reducir vida
+      vida_jugador--;
       if (vida_jugador <= 0) {
         alert("¡Game Over!");
         return;
@@ -269,20 +296,42 @@ function update() {
     }
   }
 
-  // Limpiar el canvas y redibujar todo
+  // Colisión balas del jugador con el jefe
+  if (jefe_visible && jefe_final) {
+    for (let i = 0; i < balas.length; i++) {
+      let b = balas[i];
+      if (b.origen === 'jugador' &&
+          b.x < jefe_final.x + jefe_final.ancho &&
+          b.x + b.ancho > jefe_final.x &&
+          b.y < jefe_final.y + jefe_final.alto &&
+          b.y + b.alto > jefe_final.y) {
+        jefe_vida--;
+        agregar_explosion(b.x, b.y);
+        balas.splice(i, 1);
+        i--;
+        if (jefe_vida <= 0) {
+          jefe_visible = false;
+          alert('¡Has derrotado al jefe final! ¡Victoria!');
+          return;
+        }
+      }
+    }
+  }
+
+  // Limpieza del canvas
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  // Dibujar la nave
+  // Dibujar nave
   if (nave.complete) {
     ctx.drawImage(nave, x, y, ancho_nave, alto_nave);
   }
 
-  // Dibujar las balas usando la imagen de la bala
+  // Dibujar balas
   for (let i = 0; i < balas.length; i++) {
     ctx.drawImage(bala, balas[i].x, balas[i].y, balas[i].ancho, balas[i].alto);
   }
 
-  // Dibujar los enemigos
+  // Dibujar enemigos
   for (let i = 0; i < enemigos.length; i++) {
     if (enemigos[i].visible) {
       ctx.drawImage(nave_imperio1, enemigos[i].x, enemigos[i].y, enemigos[i].ancho, enemigos[i].alto);
@@ -291,16 +340,82 @@ function update() {
 
   dibujar_explosiones(ctx);
 
+  // Hacer aparecer al jefe cuando no quedan enemigos
+  if (!enemigos.some(e => e.visible) && !jefe_visible) {
+    jefe_final = {
+      x: canvas.width / 2 - 100,
+      y: 50,
+      ancho: 200,
+      alto: 150,
+      velocidad: 2,
+      direccion: 1
+    };
+    jefe_visible = true;
+    jefe_vida = 20;
+    tiempo_ultimo_cambio_direccion = Date.now();
+    tiempo_ultimo_disparo_jefe = Date.now();
+  }
+
+  // Movimiento, disparo y barra de vida del jefe
+  if (jefe_visible && jefe_final) {
+    let tiempo_actual = Date.now();
+
+    if (tiempo_actual - tiempo_ultimo_cambio_direccion > intervalo_cambio_direccion) {
+      jefe_final.direccion = Math.random() < 0.5 ? -1 : 1;
+      tiempo_ultimo_cambio_direccion = tiempo_actual;
+    }
+
+    jefe_final.x += jefe_final.velocidad * jefe_final.direccion;
+    if (jefe_final.x < 0) jefe_final.x = 0;
+    if (jefe_final.x + jefe_final.ancho > canvas.width) jefe_final.x = canvas.width - jefe_final.ancho;
+
+    ctx.drawImage(nave_vader, jefe_final.x, jefe_final.y, jefe_final.ancho, jefe_final.alto);
+
+    disparo_jefe();
+
+    ctx.fillStyle = 'gray';
+    ctx.fillRect(20, 50, 200, 20);
+    ctx.fillStyle = 'red';
+    ctx.fillRect(20, 50, 200 * (jefe_vida / 20), 20);
+    ctx.strokeStyle = 'white';
+    ctx.strokeRect(20, 50, 200, 20);
+  }
+
   // Barra de vida de la nave
   ctx.fillStyle = 'red';
-  ctx.fillRect(20, 20, 100, 20); // Fondo rojo
+  ctx.fillRect(20, 20, 100, 20);
   ctx.fillStyle = 'green';
-  ctx.fillRect(20, 20, 100 * (vida_jugador / 10), 20); // Verde según la vida
+  ctx.fillRect(20, 20, 100 * (vida_jugador / 10), 20);
   ctx.strokeStyle = 'white';
-  ctx.strokeRect(20, 20, 100, 20); // Borde blanco
+  ctx.strokeRect(20, 20, 100, 20);
 
   requestAnimationFrame(update);
 }
 
 
-update();
+// Iniciamos el video de introducción antes de iniciar el juego
+const pantalla_inicio = document.getElementById('pantalla_inicio');
+const video = document.getElementById('video_intro');
+
+document.getElementById('btn_intro').addEventListener('click', () => {
+  pantalla_inicio.style.display = 'none';
+  video.style.display = 'block';
+  video.muted = false;
+  video.play();
+});
+
+document.getElementById('btn_saltar').addEventListener('click', () => {
+  pantalla_inicio.style.display = 'none';
+  canvas.style.display = 'block';
+  musica_fondo.play();
+  update();
+});
+
+// Cuando termine el video, ocultamos y arrancamos el juego
+video.addEventListener('ended', () => {
+  video.style.display = 'none';
+  canvas.style.display = 'block';
+  musica_fondo.play();
+  update();
+});
+
