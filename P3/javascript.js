@@ -12,6 +12,9 @@ function ajustarCanvas() {
 window.addEventListener('resize', ajustarCanvas);
 ajustarCanvas();
 
+// Puntuación de la partida
+let puntos = 0;
+
 // Canción de fondo derante las naes enemigas
 const musica_fondo = new Audio('duel_of_fates.mp3');
 musica_fondo.loop = true;
@@ -34,11 +37,11 @@ cancion_derrota.volume = 0.75;
 
 // Nave del piloto
 const nave = new Image();
-nave.src = 'x_wing.png'
+nave.src = 'x_wing.png';
 
 // Disparos láser
 const bala = new Image();
-bala.src = 'laser.png'
+bala.src = 'laser.png';
 
 // Sonido al disparar
 const sonido_disparo = new Audio('disparo_laser.mp3');
@@ -73,11 +76,11 @@ const sonido_explosion = new Audio('explosion.mp3');
 const nave_imperio1 = new Image();
 nave_imperio1.src = 'nave_imperio1.png';
 const enemigos = [];
-const filas = 5;
+const filas = 3;
 const columnas = 8;
 const ancho_enemigo = canvas.width * 0.05;
 const alto_enemigo = canvas.height * 0.05;
-const velocidad_enemigos = 2;
+let velocidad_enemigos = 2;
 let direccion_enemigos = 1; // 1 para derecha, -1 para izquierda
 let descenso_enemigos = 30; // Cuánto bajan los enemigos al llegar al borde
 
@@ -258,6 +261,7 @@ function update() {
 
   if (cambiar_direccion) {
     direccion_enemigos *= -1;
+    velocidad_enemigos += 0.5;
     for (let j = 0; j < enemigos.length; j++) {
       enemigos[j].y += descenso_enemigos;
     }
@@ -267,8 +271,15 @@ function update() {
 
   // Colisión enemigos con la nave
   for (let i = 0; i < enemigos.length; i++) {
+    if (!enemigos[i].visible) continue; // Evita enemigos ya eliminados
+
     if (enemigos[i].y + enemigos[i].alto >= y) {
-      alert("¡Game Over!");
+      musica_fondo.pause();
+      cancion_boss.pause();
+      cancion_derrota.play();
+      alert("¡Flordeliz, responde Flordeliz!");
+      alert('¡NOOOOOOOOO!');
+      alert('GAME OVER!');
       return;
     }
   }
@@ -288,6 +299,7 @@ function update() {
           enemigo.visible = false;
           balas.splice(i, 1);
           i--;
+          puntos+= 10;
           break;
         }
       }
@@ -331,7 +343,9 @@ function update() {
         agregar_explosion(b.x, b.y);
         balas.splice(i, 1);
         i--;
+        puntos += 20;
         if (jefe_vida <= 0) {
+          puntos += 500;
           cancion_boss.pause();
           cancion_victoria.play();
           jefe_visible = false;
@@ -404,20 +418,25 @@ function update() {
     disparo_jefe();
 
     ctx.fillStyle = 'gray';
-    ctx.fillRect(20, 50, 200, 20);
+    ctx.fillRect(canvas.width - 220, 50, 200, 20);
     ctx.fillStyle = 'red';
-    ctx.fillRect(20, 50, 200 * (jefe_vida / 20), 20);
+    ctx.fillRect(canvas.width - 220, 50, 200 * (jefe_vida / 20), 20);
     ctx.strokeStyle = 'white';
-    ctx.strokeRect(20, 50, 200, 20);
+    ctx.strokeRect(canvas.width - 220, 50, 200, 20);
   }
 
   // Barra de vida de la nave
   ctx.fillStyle = 'red';
-  ctx.fillRect(20, 20, 100, 20);
+  ctx.fillRect(canvas.width - 120, 20, 100, 20);
   ctx.fillStyle = 'green';
-  ctx.fillRect(20, 20, 100 * (vida_jugador / 10), 20);
+  ctx.fillRect(canvas.width - 120, 20, 100 * (vida_jugador / 10), 20);
   ctx.strokeStyle = 'white';
-  ctx.strokeRect(20, 20, 100, 20);
+  ctx.strokeRect(canvas.width - 120, 20, 100, 20);
+
+  // Marcador de puntos
+  ctx.fillStyle = 'white';
+  ctx.font = '20px Arial';
+  ctx.fillText(`Puntos: ${puntos}`, 20, 20);  
 
   requestAnimationFrame(update);
 }
@@ -448,4 +467,3 @@ video.addEventListener('ended', () => {
   musica_fondo.play();
   update();
 });
-
