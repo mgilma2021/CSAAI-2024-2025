@@ -12,10 +12,25 @@ function ajustarCanvas() {
 window.addEventListener('resize', ajustarCanvas);
 ajustarCanvas();
 
-// Canción de fondo
+// Canción de fondo derante las naes enemigas
 const musica_fondo = new Audio('duel_of_fates.mp3');
 musica_fondo.loop = true;
-musica_fondo.volume = 0.5;
+musica_fondo.volume = 0.75;
+
+// Canción deurante la batalla del jefe
+const cancion_boss = new Audio('cancion_boss_final.mp3');
+cancion_boss.loop = true;
+cancion_boss.volume = 0.75;
+
+// Canción de victoria
+const cancion_victoria = new Audio('cancion_victoria.mp3');
+cancion_victoria.loop = true;
+cancion_victoria.volume = 0.75;
+
+// Canción de derrota
+const cancion_derrota = new Audio('cancion_derrota.mp3');
+cancion_derrota.loop = true;
+cancion_derrota.volume = 0.75;
 
 // Nave del piloto
 const nave = new Image();
@@ -27,6 +42,7 @@ bala.src = 'laser.png'
 
 // Sonido al disparar
 const sonido_disparo = new Audio('disparo_laser.mp3');
+sonido_disparo.volume = 0.25;
 
 // Cooldaown entre disparos
 const tiempo_cooldown = 500; // 500ms
@@ -35,6 +51,7 @@ let ultimo_disparo = 0;
 // Explosiones al impactar
 const explosion = new Image();
 explosion.src = 'explosion.png';
+explosion.volume = 0.01;
 
 // Imagen del nave final
 const nave_vader = new Image();
@@ -290,7 +307,12 @@ function update() {
       i--;
       vida_jugador--;
       if (vida_jugador <= 0) {
-        alert("¡Game Over!");
+        musica_fondo.pause();
+        cancion_boss.pause();
+        cancion_derrota.play();
+        alert("¡Flordeliz, responde Flordeliz!");
+        alert('¡NOOOOOOOOO!');
+        alert('GAME OVER!');
         return;
       }
     }
@@ -310,8 +332,11 @@ function update() {
         balas.splice(i, 1);
         i--;
         if (jefe_vida <= 0) {
+          cancion_boss.pause();
+          cancion_victoria.play();
           jefe_visible = false;
-          alert('¡Has derrotado al jefe final! ¡Victoria!');
+          alert('¡Enhorabuena Flordeliz!');
+          alert('¡La galaxia vuele a estar a salvo!')
           return;
         }
       }
@@ -342,6 +367,8 @@ function update() {
 
   // Hacer aparecer al jefe cuando no quedan enemigos
   if (!enemigos.some(e => e.visible) && !jefe_visible) {
+    musica_fondo.pause();
+    cancion_boss.play();
     jefe_final = {
       x: canvas.width / 2 - 100,
       y: 50,
@@ -354,6 +381,9 @@ function update() {
     jefe_vida = 20;
     tiempo_ultimo_cambio_direccion = Date.now();
     tiempo_ultimo_disparo_jefe = Date.now();
+    alert('¿Que es eso?');
+    alert('¡Es la nave de Vader!');
+    alert('¡Tienes que derrotarlo Flordeliz!');
   }
 
   // Movimiento, disparo y barra de vida del jefe
