@@ -20,11 +20,6 @@ const musica_fondo = new Audio('duel_of_fates.mp3');
 musica_fondo.loop = true;
 musica_fondo.volume = 0.75;
 
-// Canción deurante la batalla del jefe
-const cancion_boss = new Audio('cancion_boss_final.mp3');
-cancion_boss.loop = true;
-cancion_boss.volume = 0.75;
-
 // Canción de victoria
 const cancion_victoria = new Audio('cancion_victoria.mp3');
 cancion_victoria.loop = true;
@@ -275,7 +270,6 @@ function update() {
 
     if (enemigos[i].y + enemigos[i].alto >= y) {
       musica_fondo.pause();
-      cancion_boss.pause();
       cancion_derrota.play();
       alert("¡Flordeliz, responde Flordeliz!");
       alert('¡NOOOOOOOOO!');
@@ -320,7 +314,6 @@ function update() {
       vida_jugador--;
       if (vida_jugador <= 0) {
         musica_fondo.pause();
-        cancion_boss.pause();
         cancion_derrota.play();
         alert("¡Flordeliz, responde Flordeliz!");
         alert('¡NOOOOOOOOO!');
@@ -346,7 +339,7 @@ function update() {
         puntos += 20;
         if (jefe_vida <= 0) {
           puntos += 500;
-          cancion_boss.pause();
+          musica_fondo.pause()
           cancion_victoria.play();
           jefe_visible = false;
           alert('¡Enhorabuena Flordeliz!');
@@ -381,8 +374,6 @@ function update() {
 
   // Hacer aparecer al jefe cuando no quedan enemigos
   if (!enemigos.some(e => e.visible) && !jefe_visible) {
-    musica_fondo.pause();
-    cancion_boss.play();
     jefe_final = {
       x: canvas.width / 2 - 100,
       y: 50,
