@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Memory Game</title>
+
+    <!-- Hoja de estilo -->
+    <link rel="stylesheet" href="css.css" />
+    <script src="crono.js"></script>
+    <script src="js.js" defer></script>
+</head>
+
+<body>
+    <h1>Juego de Memoria</h1>
+
+    <div class="controls">
+        <label for="board-size">Tamaño:</label>
+        <select id="board-size">
+            <option value="2">2x2</option>
+            <option value="4" selected>4x4</option>
+            <option value="6">6x6</option>
+        </select>
+
+        <button id="start-btn">Iniciar</button>
+        <button id="reset-btn">Reiniciar</button>
+
+        <div id="stats">
+            <span>Movimientos: <span id="moves">0</span></span>
+            <span>Tiempo: <span id="timer">0</span> s</span>
+        </div>
+    </div>
+
+    <div id="board" class="board"></div>
+</body>
+</html>
