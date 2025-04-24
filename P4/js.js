@@ -1,4 +1,4 @@
-console.log('Ejecutando JS...')
+console.log('Ejecutando JS...');
 
 document.addEventListener("DOMContentLoaded", () => {
     board = document.getElementById("board");
@@ -33,9 +33,6 @@ let moves = 0;
 const musica_fondo = new Audio('Dark_souls_III_theme.mp3');
 musica_fondo.loop = true;
 musica_fondo.volume = 0.2;
-
-// Sonido al girar las cartas
-const sonido_giro = new Audio("Sonido.mp3");
 
 function iniciarJuego() {
     musica_fondo.play();
@@ -123,6 +120,7 @@ function manejarClickCarta(carta) {
     if (lockBoard || carta.classList.contains("matched") || carta === firstCard) return;
 
     if (!carta.classList.contains("flipped")) {
+        // Sonido al girar las cartas
         const sonido_giro = new Audio("Sonido.mp3");
         sonido_giro.play();
     }
