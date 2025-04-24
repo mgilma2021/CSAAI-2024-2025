@@ -32,13 +32,13 @@ let moves = 0;
 // Musica de fondo
 const musica_fondo = new Audio('Dark_souls_III_theme.mp3');
 musica_fondo.loop = true;
-musica_fondo.play();
 musica_fondo.volume = 0.2;
 
 // Sonido al girar las cartas
 const sonido_giro = new Audio("Sonido.mp3");
 
 function iniciarJuego() {
+    musica_fondo.play();
     crono.reset();
     crono.start();
     resetEstadoJuego();
@@ -80,6 +80,9 @@ function generarTablero(size) {
 
     // Barajar de nuevo para mezclarlas
     shuffle(cardValues);
+
+    board.classList.remove("size-2x2", "size-4x4", "size-6x6");
+    board.classList.add(`size-${size}x${size}`);
 
     board.innerHTML = "";
     board.style.gridTemplateColumns = `repeat(${size}, auto)`;
@@ -141,6 +144,7 @@ function manejarClickCarta(carta) {
 
             if (matchedPairs === totalPairs) {
                 crono.stop();
+                mostrarVictoria();
             }
 
             resetTurno();
@@ -167,4 +171,18 @@ function shuffle(arr) {
         const j = Math.floor(Math.random() * (i + 1));
         [arr[i], arr[j]] = [arr[j], arr[i]];
     }
+}
+
+function mostrarVictoria() {
+    document.getElementById("victory-moves").textContent = moves;
+
+    // Obtener el texto del cronómetro
+    const tiempo = timerDisplay.textContent;
+    document.getElementById("victory-time").textContent = tiempo;
+
+    document.getElementById("victory-message").classList.remove("hidden");
+}
+
+function cerrarVictoria() {
+    document.getElementById("victory-message").classList.add("hidden");
 }

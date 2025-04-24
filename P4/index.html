@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="css.css" />
     <script src="crono.js"></script>
     <script src="js.js" defer></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -32,5 +33,14 @@
     </div>
 
     <div id="board" class="board"></div>
+
+    <div id="victory-message" class="hidden">
+        <div class="victory-content">
+            <h2>¡Victoria!</h2>
+            <p>Movimientos: <span id="victory-moves"></span></p>
+            <p>Tiempo: <span id="victory-time"></span></p>
+            <button onclick="cerrarVictoria()">Cerrar</button>
+        </div>
+    </div>
 </body>
 </html>
