@@ -3,14 +3,11 @@ const canvas = document.getElementById('networkCanvas');
 const ctx = canvas.getContext('2d');
 
 let redAleatoria;
-let nodoOrigen = 0, nodoDestino = 0;
-let rutaMinimaConRetardos;
 
 const nodeRadius = 40;
 const numNodos = 5;
 const nodeConnect = 2;
 const nodeRandomDelay = 1000;
-const pipeRandomWeight = 100;
 
 const mensajeElem = document.getElementById("mensaje");
 const tiempoTotalElem = document.getElementById("tiempoTotal");
@@ -187,7 +184,7 @@ btnCNet.onclick = () => {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   drawNet(redAleatoria);
   mensajeElem.textContent = "Red creada";
-  tiempoTotalElem.textContent = '0'
+  tiempoTotalElem.textContent = '0';
   document.getElementById("nodoCount").textContent = redAleatoria.length;
 };
 
@@ -227,5 +224,3 @@ btnMinPath.onclick = () => {
   mensajeElem.textContent = "Ruta calculada";
   tiempoTotalElem.textContent = Math.floor(totalDelay);
 };
-
-
